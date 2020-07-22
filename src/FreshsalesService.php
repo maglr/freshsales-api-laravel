@@ -3,6 +3,7 @@
 namespace Gentor\Freshsales;
 
 use Gentor\Freshsales\Api\Accounts;
+use Gentor\Freshsales\Api\Config;
 use Gentor\Freshsales\Api\Contacts;
 use Gentor\Freshsales\Api\Deals;
 use Gentor\Freshsales\Api\Leads;
@@ -113,5 +114,13 @@ class FreshsalesService
     public function search()
     {
         return new Search($this->client);
+    }
+
+    /**
+     * @return \Gentor\Freshsales\Api\Config
+     */
+    public function config()
+    {
+        return new Config($this->client);
     }
 }

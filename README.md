@@ -107,6 +107,29 @@ Freshsales::search()->query();
 Freshsales::search()->lookup();
 ```
 
+* [Configuration](https://www.freshsales.io/api/#admin_configuration)
+
+```php
+Freshsales::config()->owners();
+Freshsales::config()->territories();
+Freshsales::config()->deal_stages();
+Freshsales::config()->currencies();
+Freshsales::config()->deal_reasons();
+Freshsales::config()->deal_types();
+Freshsales::config()->lead_sources();
+Freshsales::config()->industry_types();
+Freshsales::config()->business_types();
+Freshsales::config()->campaigns();
+Freshsales::config()->deal_payment_statuses();
+Freshsales::config()->deal_products();
+Freshsales::config()->deal_pipelines();
+Freshsales::config()->contact_statuses();
+Freshsales::config()->sales_activity_types();
+Freshsales::config()->sales_activity_outcomes();
+Freshsales::config()->sales_activity_entity_types();
+Freshsales::config()->get($api);
+```
+
 Documentation
 -------------
 
