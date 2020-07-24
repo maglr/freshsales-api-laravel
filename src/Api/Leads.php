@@ -25,10 +25,10 @@ class Leads extends Contacts
      */
     public function convert($id, array $attributes)
     {
-        $response = $this->client->post($this->endPoint . $id . '/convert', [
-            'json' => [$this->entityType => $attributes],
-        ]);
-
-        return json_decode($response->getBody());
+        return $this->client->request(
+            'post',
+            $this->endPoint . $id . '/convert',
+            [$this->entityType => $attributes]
+        );
     }
 }

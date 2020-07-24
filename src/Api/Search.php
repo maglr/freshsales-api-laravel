@@ -2,8 +2,6 @@
 
 namespace Gentor\Freshsales\Api;
 
-use GuzzleHttp\Client;
-
 /**
  * Class Search
  * @package Gentor\Freshsales\Api
@@ -33,16 +31,12 @@ class Search
     public function query(string $query, array $include, int $perPage = 25)
     {
         $options = [
-            'query' => [
-                'q' => $query,
-                'include' => implode(',', $include),
-                'per_page' => $perPage,
-            ],
+            'q' => $query,
+            'include' => implode(',', $include),
+            'per_page' => $perPage,
         ];
 
-        $response = $this->client->get('/api/search', $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', '/api/search', $options);
     }
 
     /**
@@ -54,15 +48,11 @@ class Search
     public function lookup(string $query, string $field, array $entities)
     {
         $options = [
-            'query' => [
-                'q' => $query,
-                'f' => $field,
-                'entities' => implode(',', $entities),
-            ],
+            'q' => $query,
+            'f' => $field,
+            'entities' => implode(',', $entities),
         ];
 
-        $response = $this->client->get('/api/lookup', $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', '/api/lookup', $options);
     }
 }

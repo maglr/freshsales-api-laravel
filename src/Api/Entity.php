@@ -2,19 +2,12 @@
 
 namespace Gentor\Freshsales\Api;
 
-use GuzzleHttp\Client;
-
 /**
  * Class Entity
  * @package Gentor\Freshsales\Api
  */
 abstract class Entity
 {
-    /**
-     * @var Client
-     */
-    protected $client;
-
     /**
      * @var string
      */
@@ -26,6 +19,11 @@ abstract class Entity
     protected $endPoint;
 
     /**
+     * @var Client
+     */
+    protected $client;
+    
+    /**
      * Entity constructor.
      * @param Client $client
      */
@@ -33,7 +31,7 @@ abstract class Entity
     {
         $this->client = $client;
     }
-
+    
     /**
      * @param array $attributes
      * @param array $customFields
@@ -45,11 +43,7 @@ abstract class Entity
             $attributes['custom_field'] = $this->prefixCustomFields($customFields);
         }
 
-        $response = $this->client->post($this->endPoint, [
-            'json' => [$this->entityType => $attributes],
-        ]);
-
-        return json_decode($response->getBody());
+        return $this->client->request('post', $this->endPoint, [$this->entityType => $attributes]);
     }
 
     /**
@@ -64,11 +58,7 @@ abstract class Entity
             $attributes['custom_field'] = $this->prefixCustomFields($customFields);
         }
 
-        $response = $this->client->put($this->endPoint . $id, [
-            'json' => [$this->entityType => $attributes],
-        ]);
-
-        return json_decode($response->getBody());
+        return $this->client->request('put', $this->endPoint . $id, [$this->entityType => $attributes]);
     }
 
     /**
@@ -77,9 +67,7 @@ abstract class Entity
      */
     public function delete($id)
     {
-        $response = $this->client->delete($this->endPoint . $id);
-
-        return json_decode($response->getBody());
+        return $this->client->request('delete', $this->endPoint . $id);
     }
 
     /**
@@ -88,9 +76,7 @@ abstract class Entity
      */
     public function forget($id)
     {
-        $response = $this->client->delete($this->endPoint . $id . '/forget');
-
-        return json_decode($response->getBody());
+        return $this->client->request('delete', $this->endPoint . $id . '/forget');
     }
 
     /**
@@ -100,17 +86,13 @@ abstract class Entity
      */
     public function bulkDelete(array $ids, array $params = [])
     {
-        $options = [
-            'json' => ['selected_ids' => $ids],
-        ];
+        $options = ['selected_ids' => $ids];
 
         if (!empty($params)) {
-            $options['json'] = array_merge($options['json'], $params);
+            $options = array_merge($options, $params);
         }
 
-        $response = $this->client->post($this->endPoint . 'bulk_destroy', $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('post', $this->endPoint . 'bulk_destroy', $options);
     }
 
     /**
@@ -122,14 +104,10 @@ abstract class Entity
     {
         $options = [];
         if (!empty($attributes)) {
-            $options = [
-                'json' => [$this->entityType => $attributes],
-            ];
+            $options = [$this->entityType => $attributes];
         }
 
-        $response = $this->client->post($this->endPoint . $id . '/clone', $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('post', $this->endPoint . $id . '/clone', $options);
     }
 
     /**
@@ -142,15 +120,11 @@ abstract class Entity
         $options = [];
         if (!empty($include)) {
             $options = [
-                'query' => [
-                    'include' => implode(',', $include),
-                ],
+                'include' => implode(',', $include),
             ];
         }
 
-        $response = $this->client->get($this->endPoint . $id, $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', $this->endPoint . $id, $options);
     }
 
     /**
@@ -160,16 +134,7 @@ abstract class Entity
      */
     public function list($viewId, array $params = [])
     {
-        $options = [];
-        if (!empty($params)) {
-            $options = [
-                'query' => $params
-            ];
-        }
-
-        $response = $this->client->get($this->endPoint . 'view/' . $viewId, $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', $this->endPoint . 'view/' . $viewId, $params);
     }
 
     /**
@@ -182,22 +147,19 @@ abstract class Entity
     public function filter(string $attribute, string $operator, $value, int $limit = 10)
     {
         $options = [
-            'json' => [
-                'filter_rule' => [
-                    [
-                        'attribute' => $this->entityType . '_' . $attribute . '.' . $attribute,
-                        'operator' => $operator,
-                        'value' => $value,
-                    ]
-                ],
-                'per_page' => $limit,
+            'filter_rule' => [
+                [
+                    'attribute' => $this->entityType . '_' . $attribute . '.' . $attribute,
+                    'operator' => $operator,
+                    'value' => $value,
+                ]
             ],
+            'per_page' => $limit,
         ];
 
         $uri = '/api/filtered_search/' . $this->entityType;
-        $response = $this->client->post($uri, $options);
 
-        return json_decode($response->getBody());
+        return $this->client->request('post', $uri, $options);
     }
 
     /**
@@ -217,9 +179,7 @@ abstract class Entity
      */
     public function filters()
     {
-        $response = $this->client->get($this->endPoint . 'filters');
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', $this->endPoint . 'filters');
     }
 
     /**
@@ -230,16 +190,12 @@ abstract class Entity
     {
         $options = [];
         if ($includeGroup) {
-            $options = [
-                'query' => ['include' => 'field_group']
-            ];
+            $options = ['include' => 'field_group'];
         }
 
         $uri = str_replace('/api/', '/api/settings/', $this->endPoint) . 'fields';
 
-        $response = $this->client->get($uri, $options);
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', $uri, $options);
     }
 
     /**

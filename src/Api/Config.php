@@ -2,8 +2,6 @@
 
 namespace Gentor\Freshsales\Api;
 
-use GuzzleHttp\Client;
-
 /**
  * Class Config
  *
@@ -64,8 +62,6 @@ class Config
      */
     public function get(string $api)
     {
-        $response = $this->client->get($this->endPoint . $api);
-
-        return json_decode($response->getBody());
+        return $this->client->request('get', $this->endPoint . $api);
     }
 }
