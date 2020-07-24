@@ -245,10 +245,14 @@ class Client
         return new Uri($this->client->getConfig('base_uri'));
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @return mixed
+     */
     public function response(ResponseInterface $response)
     {
         $this->updateApiCallLimits($response);
-//        dd($this->apiCallLimits);
+
         return json_decode($response->getBody());
     }
 }

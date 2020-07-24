@@ -33,6 +33,14 @@ class FreshsalesService
     }
 
     /**
+     * @return \Gentor\Freshsales\Api\Client
+     */
+    public function client()
+    {
+        return $this->client;
+    }
+
+    /**
      * @return \Gentor\Freshsales\Api\Leads
      */
     public function leads()
