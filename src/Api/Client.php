@@ -234,6 +234,8 @@ class Client
             }
         }
 
+        $this->updateApiCallLimits($response);
+
         return $this->response($response);
     }
 
@@ -251,8 +253,6 @@ class Client
      */
     public function response(ResponseInterface $response)
     {
-        $this->updateApiCallLimits($response);
-
         return json_decode($response->getBody());
     }
 }

@@ -131,6 +131,16 @@ Freshsales::config()->sales_activity_entity_types();
 Freshsales::config()->get($api);
 ```
 
+* Client - Inspired from [ianfortier/Basic-Freshsales-API](https://github.com/ianfortier/Basic-Freshsales-API)
+
+```php
+Freshsales::client()->request();
+Freshsales::client()->isRateLimitEnabled();
+Freshsales::client()->enableRateLimit();
+Freshsales::client()->disableRateLimit();
+Freshsales::client()->getApiCallLimits();
+```
+
 Documentation
 -------------
 
