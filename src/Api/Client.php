@@ -179,12 +179,13 @@ class Client
     protected function updateApiCallLimits(ResponseInterface $response): void
     {
         // Grab the API call limit header returned from Freshsales
+        if (!$response->hasHeader('x-RateLimit-Limit')) {
+            return;
+        }
+
         $callLimitRemaining = $response->getHeader('x-RateLimit-Remaining')[0];
         $callLimitTotal = $response->getHeader('x-RateLimit-Limit')[0];
         $callLimitReset = $response->getHeader('x-RateLimit-Reset')[0];
-        if (!$callLimitRemaining) {
-            return;
-        }
 
         $this->apiCallLimits = [
             'limit' => (int)$callLimitTotal,
