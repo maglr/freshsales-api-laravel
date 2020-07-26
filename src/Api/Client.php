@@ -145,7 +145,7 @@ class Client
             return;
         }
 
-        $limitLeft = $this->getApiCallLimits('left');
+        $limitLeft = $this->getApiCallLimits('left') ?: 1;
         $secondsLeft = $limitReset->getTimestamp() - time();
         $rateLimitCycle = round(($secondsLeft / $limitLeft) * 1000);
 
