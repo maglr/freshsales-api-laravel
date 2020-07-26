@@ -10,6 +10,17 @@ use Illuminate\Support\ServiceProvider;
  */
 class FreshsalesServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/freshsales.php' => config_path('freshsales.php'),
+        ], 'config');
+
+        $this->app->bind('freshsales', function ($app) {
+            return new FreshsalesService($app['config']['freshsales']);
+        });
+    }
+
     /**
      * Register any application services.
      *
@@ -17,9 +28,7 @@ class FreshsalesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('freshsales', function ($app) {
-            return new FreshsalesService($app['config']['freshsales']);
-        });
+        $this->mergeConfigFrom(__DIR__ . '/../config/freshsales.php', 'freshsales');
     }
 
     /**
