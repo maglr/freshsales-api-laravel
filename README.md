@@ -9,7 +9,7 @@ Installation
 Installation using composer:
 
 ```
-composer require gentor/freshsales-api-laravel
+composer require maglr/freshsales-api-laravel
 ```
 
 Configuration
