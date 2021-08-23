@@ -1,5 +1,5 @@
 {
-    "name": "gentor/freshsales-api-laravel",
+    "name": "maglr/freshsales-api-laravel",
     "description": "Wrapper on the REST Freshsales API for Laravel",
     "keywords": [
         "laravel",
