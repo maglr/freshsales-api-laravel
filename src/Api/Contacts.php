@@ -25,7 +25,7 @@ class Contacts extends Entity
      */
     public function assignOwner($ids, int $ownerId)
     {
-        $response = $this->client->post($this->endPoint . 'bulk_assign_owner', [
+        $response = $this->client->request('post', $this->endPoint . 'bulk_assign_owner', [
             'json' => [
                 'selected_ids' => (array)$ids,
                 'owner_id' => $ownerId,
@@ -49,7 +49,7 @@ class Contacts extends Entity
             ];
         }
 
-        $response = $this->client->get($this->endPoint . $id . '/activities', $options);
+        $response = $this->client->request('get', $this->endPoint . $id . '/activities', $options);
 
         return json_decode($response->getBody());
     }
